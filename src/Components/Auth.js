@@ -3,6 +3,7 @@ import LoginGithub from 'react-login-github';
 import '../index.css';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import Timeline from './Timeline';
 const onSuccess = response => console.log(response);
 const onFailure = response => console.error(response);
 export default function Auth() {
@@ -29,13 +30,14 @@ export default function Auth() {
         </span>
         <span>
           <input type="text" name="name"></input>
-          <Link to="/create">
+          <Link to="/onboard">
             <button type="button" className="startButton">
               Start
             </button>
           </Link>
         </span>
       </form>
+      <Timeline />
     </div>
   );
 }

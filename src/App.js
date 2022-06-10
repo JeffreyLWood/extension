@@ -10,6 +10,7 @@ import Transfer from './Components/Transfer';
 import Footer from './Components/Footer';
 import Success from './Components/Success';
 import Nav from './Components/Nav';
+import Onboard from './Components/Onboard';
 export default function App() {
   return (
     <BrowserRouter>
@@ -17,6 +18,7 @@ export default function App() {
         <Header />
         <Routes>
           <Route exact path="/popup.html" element={<Auth />} />
+          <Route exact path="/onboard" element={<Onboard />} />
           <Route exact path="/home" element={<Home />} />
           <Route exact path="/create" element={<Create />} />
           <Route exact path="/apikey" element={<ApiKey />} />
