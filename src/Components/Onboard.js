@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
+import Timeline from './Timeline';
 export default function Onboard(props = { name: 'Joe' }) {
   let { name } = props;
   const navigate = useNavigate();
@@ -28,6 +29,7 @@ export default function Onboard(props = { name: 'Joe' }) {
           Go
         </button>
       </form>
+      <Timeline />
     </div>
   );
 }

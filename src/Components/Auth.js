@@ -3,7 +3,7 @@ import LoginGithub from 'react-login-github';
 import '../index.css';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import Timeline from './Timeline';
+
 const onSuccess = response => console.log(response);
 const onFailure = response => console.error(response);
 export default function Auth() {
@@ -37,7 +37,6 @@ export default function Auth() {
           </Link>
         </span>
       </form>
-      <Timeline />
     </div>
   );
 }

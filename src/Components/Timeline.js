@@ -3,18 +3,17 @@ import '../index.css';
 export default function Timeline() {
   return (
     <div className="timeline items-center">
-      <div className="timelineLine"></div>
       <span>
         <button type="button" class="stage"></button>
-        <label htmlFor="">Select Repo</label>
+        <div htmlFor="">Select Repo</div>
       </span>
       <span>
         <button type="button" class="stage"></button>
-        <label htmlFor="">Create Tokens</label>
+        <div htmlFor="">Create Tokens</div>
       </span>
       <span>
         <button type="button" class="stage"></button>
-        <label htmlFor="">Verify</label>
+        <div htmlFor="">Verify</div>
       </span>
     </div>
   );
