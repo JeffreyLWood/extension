@@ -37,9 +37,9 @@ var repo;
 var repo_id;
 var issue_id;
 var side;
-let contributor_id;
-let contributor_name;
+var contributor_id;
 var voteTotals;
+
 // Inform the background page that this tab should have a page-action.
 chrome.runtime.sendMessage({
   from: 'content',
@@ -278,18 +278,8 @@ if (rootcontainer.length) {
 
     const res_get_repo_status = await get_repo_status(repo_id);
     const isRepoTurboSrcToken = res_get_repo_status['body']['data']['getRepoStatus'];
-
-    chrome.storage.local.get(['contributor_name'], data => (contributor_name = data));
-
-    chrome.storage.local.get(['contributor_id'], data => (contributor_id = data.contributor_id));
-
-    let getFromStorage = keys =>
-      new Promise((resolve, reject) => chrome.storage.local.get(['contributor_id'], result => resolve(result)));
-
-    contributor_id = await getFromStorage();
-
-    console.log(';)', contributor_id);
-
+    const contributor_name = authContributor.getAuthContributor();
+    contributor_id = await postGetContributorID(user, repo, issue_id, contributor_name);
     const res_get_authorized_contributor = await get_authorized_contributor(contributor_id, repo_id);
     const isAuthorizedContributor = res_get_authorized_contributor['body']['data']['getAuthorizedContributor'];
 
@@ -308,7 +298,7 @@ if (rootcontainer.length) {
               user: user,
               repo: repo,
               issueID: issue_id,
-              contributorName: contributor_name,
+              contributorID: contributor_id,
               background: 'white',
               dynamicBool: true
             };
@@ -321,7 +311,7 @@ if (rootcontainer.length) {
                   this.state.user,
                   this.state.repo,
                   this.state.issueID,
-                  this.state.contributorName,
+                  this.state.contributorID,
                   this.state.side
                 );
                 //console.log('status CDM: ' + statusReact)
@@ -422,7 +412,7 @@ if (rootcontainer.length) {
               user: ${user}
               repo: ${repo}
               issue_id: ${issue_id}
-              contributor: ${contributor_name}
+              contributor: ${contributor_id}
               side: ${this.state.side}
               `;
             }
@@ -481,7 +471,7 @@ if (rootcontainer.length) {
               user: user,
               repo: repo,
               issueID: issue_id,
-              contributorName: contributor_name,
+              contributorID: contributor_id,
               votes: ['0.0', '0.0']
             };
           }
@@ -493,7 +483,7 @@ if (rootcontainer.length) {
                   this.state.user,
                   this.state.repo,
                   this.state.issueID,
-                  this.state.contributorName,
+                  this.state.contributorID,
                   this.state.side
                 );
                 var voteYesTotals = await postGetPRvoteYesTotals(
@@ -605,7 +595,7 @@ if (rootcontainer.length) {
 
         // Get contributor_id from chain web wallet extension
         contributor_name = authContributor.getAuthContributor();
-        contributor_id = await getFromStorage();
+        contributor_id = await postGetContributorID(user, repo, issue_id, contributor_name);
         var html;
         for (var i = startIndex; i < containerItems.length; i++) {
           issue_id = containerItems[i].getAttribute('id');
@@ -653,7 +643,7 @@ if (rootcontainer.length) {
 
           //console.log('status: ' + status)
           displayOpenStatus = status === 'none' || status === 'open';
-          domContainerTurboSrcButton = document.querySelector(`#turbo-src-btn-${issue_id}`);
+          domContainerTurboSrcButton = document.querySelector(`#turbo-src-btn-${issue_id}-${contributor_id}`);
           //if (displayOpenStatus) {
           render(ce(TurboSrcButtonOpen), domContainerTurboSrcButton); //} else {
           // render(ce(TurboSrcButtonClosed), domContainerTurboSrcButton);
@@ -673,7 +663,7 @@ if (rootcontainer.length) {
               //console.log('turbo-src button click')
               const idNameSplit = idName.split('-');
               issue_id = idNameSplit[3];
-              contributor_id = await getFromStorage();
+              contributor_id = idNameSplit[4];
               //console.log(issue_id)
               //console.log(contributor_id)
               const domContainerVoteTotalMain = document.querySelector('#vote-total-main');
@@ -791,7 +781,7 @@ function createModal() {
 
 function createButtonHtml(index, issue_id, contributor_id) {
   return `
-      <div id='turbo-src-btn-${issue_id}></div>
+      <div id='turbo-src-btn-${issue_id}-${contributor_id}'></div>
     `;
 }
 //#yes_vote_button, #no_vote_button {
