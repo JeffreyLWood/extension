@@ -5,12 +5,17 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Turbo-Src</title>
-    <script></script>
+    <link rel="stylesheet" href="style.css" class="rel" />
+    <script>
+      setTimeout(() => {
+        window.close();
+      }, 3000);
+    </script>
   </head>
   <body>
-    <p>
-      You have successfully authenticated using Github. Open the turbo-src Chrome extension to complete the login
-      process.
-    </p>
+    <div>
+      <h1>You have successfully authenticated using Github.</h1>
+      <p>This window will close automatically.</p>
+    </div>
   </body>
 </html>
